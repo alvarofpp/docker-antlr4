@@ -1,22 +1,33 @@
-FROM alpine:3.15
+FROM adoptopenjdk/openjdk11:alpine AS builder
 
-# Set environment variables
-ENV HOME=/root
-ENV WORKDIR=/app
+WORKDIR /opt/antlr4
 
-# Install packages
-RUN apk --no-cache add findutils  \
-    curl \
-    bash-completion \
-    git
+ARG ANTLR_VERSION="4.9.3"
+ARG MAVEN_OPTS="-Xmx1G"
 
-# Install apps here
+RUN apk add --no-cache maven git \
+    && git clone https://github.com/antlr/antlr4.git \
+    && cd antlr4 \
+    && git checkout $ANTLR_VERSION \
+    && mvn clean --projects tool --also-make \
+    && mvn -DskipTests install --projects tool --also-make \
+    && mv ./tool/target/antlr4-*-complete.jar antlr4-tool.jar
 
-# Adds shell commands
-COPY ./commands/*.sh /usr/bin/
-RUN find /usr/bin -type f -name "*.sh" | while read NAME ; do mv "${NAME}" "${NAME%.sh}" ; done
+FROM adoptopenjdk/openjdk11:alpine-jre
 
-# Workdir and entrypoint
-WORKDIR ${WORKDIR}
+ARG user=appuser
+ARG group=appuser
+ARG uid=1000
+ARG gid=1000
 
-ENTRYPOINT ["docker-entrypoint"]
+RUN adduser \
+    --disabled-password \
+    --gecos "" \
+    --home "$(pwd)" \
+    --no-create-home \
+    --uid "${uid}" \
+    "${user}"
+
+COPY --from=builder /opt/antlr4/antlr4/antlr4-tool.jar /usr/local/lib/
+WORKDIR /work
+ENTRYPOINT ["java", "-Xmx500M", "-cp", "/usr/local/lib/antlr4-tool.jar", "org.antlr.v4.Tool"]
