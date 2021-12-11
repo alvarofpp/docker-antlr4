@@ -1,5 +1,5 @@
 # Variables
-DOCKER_IMAGE=alvarofpp/docker-image-name
+DOCKER_IMAGE=alvarofpp/antlr4
 DOCKER_IMAGE_LINTER=alvarofpp/docker-image-linter
 ROOT=$(shell pwd)
 DIR=image/
@@ -29,5 +29,4 @@ lint:
 		lint-commit ${LINT_COMMIT_TARGET_BRANCH} \
 		&& lint-markdown \
 		&& lint-dockerfile \
-		&& lint-shell-script \
 		&& lint-yaml"
