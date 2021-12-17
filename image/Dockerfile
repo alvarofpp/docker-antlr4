@@ -1,20 +1,36 @@
-FROM adoptopenjdk/openjdk11:alpine AS builder
-
-WORKDIR /opt/antlr4
+FROM alpine:3.15
 
 ARG ANTLR_VERSION="4.9.3"
-ARG MAVEN_OPTS="-Xmx1G"
+ENV ANTLR_VERSION=$ANTLR_VERSION
+ENV CLASSPATH=".:/usr/local/lib/antlr-${ANTLR_VERSION}-complete.jar:$CLASSPATH"
 
-RUN apk add --no-cache maven git \
-    && git clone https://github.com/antlr/antlr4.git \
-    && cd antlr4 \
-    && git checkout $ANTLR_VERSION \
-    && mvn clean --projects tool --also-make \
-    && mvn -DskipTests install --projects tool --also-make \
-    && mv ./tool/target/antlr4-*-complete.jar antlr4-tool.jar
+# Install packages
+RUN apk --no-cache add curl \
+    bash-completion \
+    openjdk17
 
-FROM adoptopenjdk/openjdk11:alpine-jre
+# Install ANTLR
+RUN cd /usr/local/lib/ \
+    && curl -O https://www.antlr.org/download/antlr-${ANTLR_VERSION}-complete.jar
 
-COPY --from=builder /opt/antlr4/antlr4/antlr4-tool.jar /usr/local/lib/
+# Adds shell commands
+COPY ./commands/*.sh /usr/bin/
+RUN find /usr/bin -type f -name "*.sh" | while read NAME ; do mv "${NAME}" "${NAME%.sh}" ; done
+
+# Set user
+ARG USER=appuser
+ARG UID=1000
+
+RUN adduser \
+    --disabled-password \
+    --gecos "" \
+    --home "$(pwd)" \
+    --no-create-home \
+    --uid "${UID}" \
+    "${USER}"
+
+USER $UID
+
+# Workdir and entrypoint
 WORKDIR /work
-ENTRYPOINT ["java", "-Xmx500M", "-cp", "/usr/local/lib/antlr4-tool.jar", "org.antlr.v4.Tool"]
+ENTRYPOINT []
