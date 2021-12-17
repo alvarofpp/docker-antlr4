@@ -7,7 +7,9 @@ ENV CLASSPATH=".:/usr/local/lib/antlr-${ANTLR_VERSION}-complete.jar:$CLASSPATH"
 # Install packages
 RUN apk --no-cache add curl \
     bash-completion \
-    openjdk17
+    openjdk17 \
+    fontconfig \
+    ttf-dejavu
 
 # Install ANTLR
 RUN cd /usr/local/lib/ \
