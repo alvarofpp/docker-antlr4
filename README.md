@@ -19,7 +19,7 @@ docker run --rm -v $(pwd):/work alvarofpp/antlr4 antlr -Dlanguage=Java Expr.g4
 Compile:
 
 ```shell
-docker run --rm -v $(pwd):/work alvarofpp/antlr javac src/Expr*.java
+docker run --rm -v $(pwd):/work alvarofpp/antlr4 javac src/Expr*.java
 ```
 
 View using the GUI (tested on Ubuntu 20.04.3 LTS):
@@ -28,7 +28,7 @@ View using the GUI (tested on Ubuntu 20.04.3 LTS):
 docker run --rm -it \
   -e DISPLAY=$(hostname -I | cut -f1 -d' '):0 \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
-  -v $(pwd)/src:/work alvarofpp/antlr grun Expr prog -gui
+  -v $(pwd)/src:/work alvarofpp/antlr4 grun Expr prog -gui
 ```
 
 [antlr4]: https://github.com/antlr/antlr4
