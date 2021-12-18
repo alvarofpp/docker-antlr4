@@ -33,4 +33,4 @@ docker run --rm -it \
 
 [antlr4]: https://github.com/antlr/antlr4
 [antlr4-docker]: https://github.com/antlr/antlr4/tree/master/docker
-[docker-hub]: https://hub.docker.com/r/alvarofpp/antlr
+[docker-hub]: https://hub.docker.com/r/alvarofpp/antlr4
