@@ -1,5 +1,5 @@
 ---
-name: Publishes the docker image on DockerHub.
+name: Publishes the docker image on DockerHub
 
 on:
   push:
@@ -21,4 +21,4 @@ jobs:
       - name: Build
         run: make build-all
       - name: Push
-        run: push-all
+        run: make push-all
