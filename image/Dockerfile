@@ -1,6 +1,6 @@
-FROM alpine:3.15
+FROM alpine:3.19.1
 
-ARG ANTLR_VERSION="4.9.3"
+ARG ANTLR_VERSION="4.13.1"
 ENV ANTLR_VERSION=$ANTLR_VERSION
 ENV CLASSPATH=".:/usr/local/lib/antlr-${ANTLR_VERSION}-complete.jar:$CLASSPATH"
 
@@ -12,12 +12,10 @@ RUN apk --no-cache add curl \
     ttf-dejavu
 
 # Install ANTLR
-RUN cd /usr/local/lib/ \
-    && curl -O https://www.antlr.org/download/antlr-${ANTLR_VERSION}-complete.jar
+RUN curl -O --output-dir /usr/local/lib/ https://www.antlr.org/download/antlr-${ANTLR_VERSION}-complete.jar
 
 # Adds shell commands
-COPY ./commands/*.sh /usr/bin/
-RUN find /usr/bin -type f -name "*.sh" | while read NAME ; do mv "${NAME}" "${NAME%.sh}" ; done
+COPY ./commands/* /usr/bin/
 
 # Set user
 ARG USER=appuser

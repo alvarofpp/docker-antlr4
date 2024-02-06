@@ -1,0 +1,23 @@
+---
+name: Integration
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    container:
+      image: alvarofpp/linter:latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: git config --global --add safe.directory $GITHUB_WORKSPACE
+      - run: lint-commit origin/main
+      - run: lint-markdown
+      - run: lint-dockerfile
+      - run: lint-yaml
+      - run: lint-shell-script

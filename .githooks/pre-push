@@ -1,6 +1,7 @@
 #!/bin/sh
 
 warning() {
+  # shellcheck disable=2028
   echo "\\e[1;33m$1"
 }
 
