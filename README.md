@@ -8,6 +8,9 @@ A docker image based in Alpine for [ANTLR4][antlr4], inspired by the [official i
 docker pull alvarofpp/antlr4
 ```
 
+> If you want to start a project using ANTLR4, I recommend using the following boilerplate:
+  [alvarofpp/boilerplate-antlr4][boilerplate-antlr4].
+
 ## How to use
 
 Generate files from your grammar:
@@ -33,4 +36,5 @@ docker run --rm -u $(id -u) -it \
 
 [antlr4]: https://github.com/antlr/antlr4
 [antlr4-docker]: https://github.com/antlr/antlr4/tree/master/docker
+[boilerplate-antlr4]: https://github.com/alvarofpp/boilerplate-antlr4
 [docker-hub]: https://hub.docker.com/r/alvarofpp/antlr4
