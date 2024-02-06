@@ -1,10 +1,10 @@
 # Variables
 DOCKER_IMAGE=alvarofpp/antlr4
-DOCKER_IMAGE_LINTER=alvarofpp/base:linter
+DOCKER_IMAGE_LINTER=alvarofpp/linter:latest
 ROOT=$(shell pwd)
 DIR=image/
 LINT_COMMIT_TARGET_BRANCH=origin/main
-ANTLR_VERSION=4.9.3
+ANTLR_VERSION=4.13.1
 
 # Commands
 .PHONY: install-hooks
@@ -19,17 +19,9 @@ build: install-hooks
 build-no-cache: install-hooks
 	@docker build --build-arg ANTLR_VERSION="${ANTLR_VERSION}" ${DIR} -t ${DOCKER_IMAGE} --no-cache
 
-.PHONY: build-all
-build-all: install-hooks
-	@./build_all.sh
-
 .PHONY: push
 push:
 	@docker push ${DOCKER_IMAGE}
-
-.PHONY: push-all
-push-all:
-	@./push_all.sh
 
 .PHONY: lint
 lint:

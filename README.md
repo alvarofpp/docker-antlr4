@@ -13,19 +13,19 @@ docker pull alvarofpp/antlr4
 Generate files from your grammar:
 
 ```shell
-docker run --rm -v $(pwd):/work alvarofpp/antlr4 antlr -Dlanguage=Java Expr.g4
+docker run --rm -u $(id -u) -v $(pwd):/work alvarofpp/antlr4 antlr -Dlanguage=Java Expr.g4
 ```
 
 Compile:
 
 ```shell
-docker run --rm -v $(pwd):/work alvarofpp/antlr4 javac src/Expr*.java
+docker run --rm -u $(id -u) -v $(pwd):/work alvarofpp/antlr4 javac src/Expr*.java
 ```
 
 View using the GUI (tested on Ubuntu 20.04.3 LTS):
 
 ```shell
-docker run --rm -it \
+docker run --rm -u $(id -u) -it \
   -e DISPLAY=$(hostname -I | cut -f1 -d' '):0 \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
   -v $(pwd)/src:/work alvarofpp/antlr4 grun Expr prog -gui
