@@ -20,7 +20,6 @@ COPY ./commands/* /usr/bin/
 # Set user
 ARG USER=appuser
 ARG UID=1000
-
 RUN adduser \
     --disabled-password \
     --gecos "" \
@@ -28,7 +27,6 @@ RUN adduser \
     --no-create-home \
     --uid "${UID}" \
     "${USER}"
-
 USER $UID
 
 # Workdir and entrypoint
